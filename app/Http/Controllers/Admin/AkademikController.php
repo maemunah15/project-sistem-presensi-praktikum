@@ -40,11 +40,16 @@ class AkademikController extends Controller
             'kode'     => 'required|string|max:20|unique:mata_praktikum,kode',
             'nama'     => 'required|string|max:100',
             'semester' => 'required|numeric|min:1|max:8',
-            'sks'      => 'required|numeric|min:1|max:6',
-            'status'   => 'required|boolean',
+            'sks'      => 'nullable|numeric|min:1|max:6',
         ]);
 
-        MataPraktikum::create($request->all());
+        MataPraktikum::create([
+            'kode'     => $request->kode,
+            'nama'     => $request->nama,
+            'semester' => $request->semester,
+            'sks'      => $request->sks ?? 3,
+            'status'   => $request->status ?? 1,
+        ]);
 
         return redirect()->route('admin.akademik.index', ['tab' => 'mata-kuliah'])
             ->with('success', 'Mata Kuliah Praktikum berhasil ditambahkan!');
@@ -58,11 +63,16 @@ class AkademikController extends Controller
             'kode'     => 'required|string|max:20|unique:mata_praktikum,kode,' . $mk->id,
             'nama'     => 'required|string|max:100',
             'semester' => 'required|numeric|min:1|max:8',
-            'sks'      => 'required|numeric|min:1|max:6',
-            'status'   => 'required|boolean',
+            'sks'      => 'nullable|numeric|min:1|max:6',
         ]);
 
-        $mk->update($request->all());
+        $mk->update([
+            'kode'     => $request->kode,
+            'nama'     => $request->nama,
+            'semester' => $request->semester,
+            'sks'      => $request->sks ?? $mk->sks,
+            'status'   => $request->status ?? $mk->status,
+        ]);
 
         return redirect()->route('admin.akademik.index', ['tab' => 'mata-kuliah'])
             ->with('success', 'Mata Kuliah Praktikum berhasil diperbarui!');
@@ -87,16 +97,24 @@ class AkademikController extends Controller
             'mata_praktikum_id' => 'required|exists:mata_praktikum,id',
             'nama_kelas'        => 'required|string|max:50',
             'tahun_ajaran'      => 'required|string|max:20',
-            'semester'          => 'required|integer|min:1|max:8',
+            'semester'          => 'nullable|integer|min:1|max:8',
         ]);
+
+        $mk = MataPraktikum::find($request->mata_praktikum_id);
+        $semester = $request->semester ?: ($mk->semester ?? 1);
 
         KelasPraktikum::create([
             'mata_praktikum_id' => $request->mata_praktikum_id,
             'nama_kelas'        => $request->nama_kelas,
             'tahun_ajaran'      => $request->tahun_ajaran,
-            'semester'          => $request->semester,
+            'semester'          => $semester,
             'status'            => 1,
         ]);
+
+        if ($request->input('redirect_to') === 'penugasan') {
+            return redirect()->route('admin.penugasan.index')
+                ->with('success', 'Kelas Praktikum berhasil ditambahkan!');
+        }
 
         return redirect()->route('admin.akademik.index', ['tab' => 'kelas'])
             ->with('success', 'Kelas Praktikum berhasil ditambahkan!');
@@ -110,10 +128,16 @@ class AkademikController extends Controller
             'mata_praktikum_id' => 'required|exists:mata_praktikum,id',
             'nama_kelas'        => 'required|string|max:50',
             'tahun_ajaran'      => 'required|string|max:20',
-            'semester'          => 'required|integer|min:1|max:8',
+            'semester'          => 'nullable|integer|min:1|max:8',
         ]);
 
-        $kelas->update($request->all());
+        $mk = MataPraktikum::find($request->mata_praktikum_id);
+        $semester = $request->semester ?: ($mk->semester ?? $kelas->semester ?? 1);
+
+        $data = $request->all();
+        $data['semester'] = $semester;
+
+        $kelas->update($data);
 
         return redirect()->route('admin.akademik.index', ['tab' => 'kelas'])
             ->with('success', 'Kelas Praktikum berhasil diperbarui!');

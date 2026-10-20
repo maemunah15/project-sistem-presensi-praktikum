@@ -14,77 +14,48 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. DUMMY USER ADMIN
-        User::updateOrCreate(
-            ['nip_nim' => '1001'],
-            [
-                'nama' => 'Admin Lab',
-                'email' => 'admin@uin.ac.id',
-                'password' => Hash::make('password123'),
-                'role' => 'admin',
-                'status' => true,
-            ]
-        );
+        // Hapus user lama agar bersih
+        User::query()->delete();
 
-        // 2. DUMMY USER DOSEN
-        User::updateOrCreate(
-            ['nip_nim' => '198501012020'],
-            [
-                'nama' => 'Dosen Fulan, M.T.',
-                'email' => 'dosen@uin.ac.id',
-                'password' => Hash::make('password123'),
-                'role' => 'dosen',
-                'status' => true,
-            ]
-        );
+        // 1. ADMIN
+        User::create([
+            'nip_nim' => 'admin',
+            'nama' => 'Administrator Lab',
+            'email' => 'admin@uin.ac.id',
+            'password' => Hash::make('password123'),
+            'role' => 'admin',
+            'status' => true,
+        ]);
 
-        // 3. DUMMY USER ASPRAK
-        User::updateOrCreate(
-            ['nip_nim' => '1227050001'],
-            [
-                'nama' => 'Asisten Praktikum',
-                'email' => 'asprak@uin.ac.id',
-                'password' => Hash::make('password123'),
-                'role' => 'asprak',
-                'status' => true,
-            ]
-        );
+        // 2. DOSEN
+        User::create([
+            'nip_nim' => '198501012020',
+            'nama' => 'Dosen Pengampu, M.Kom.',
+            'email' => 'dosen@uin.ac.id',
+            'password' => Hash::make('password123'),
+            'role' => 'dosen',
+            'status' => true,
+        ]);
 
-        // 4. USER UJI COBA (12345)
-        User::updateOrCreate(
-            ['nip_nim' => '12345'],
-            [
-                'nama' => 'Akun Uji Coba',
-                'email' => 'test12345@uin.ac.id',
-                'password' => Hash::make('password123'),
-                'role' => 'mahasiswa',
-                'status' => true,
-            ]
-        );
+        // 3. ASISTEN DOSEN / ASPRAK
+        User::create([
+            'nip_nim' => '1227050001',
+            'nama' => 'Asisten Dosen Praktikum',
+            'email' => 'asprak@uin.ac.id',
+            'password' => Hash::make('password123'),
+            'role' => 'asprak',
+            'status' => true,
+        ]);
 
-        // 5. USER MAHASISWA
-        User::updateOrCreate(
-            ['nip_nim' => '2388010026'],
-            [
-                'nama' => 'Maemunah',
-                'email' => 'maemunah@uin.ac.id',
-                'password' => Hash::make('password123'),
-                'role' => 'mahasiswa',
-                'status' => true,
-            ]
-        );
-
-        // 6. USER MAHASISWA CONTOH
-        User::updateOrCreate(
-            ['nip_nim' => '1227050002'],
-            [
-                'nama' => 'Mahasiswa Contoh',
-                'email' => 'mahasiswa@uin.ac.id',
-                'password' => Hash::make('password123'),
-                'role' => 'mahasiswa',
-                'status' => true,
-            ]
-        );
+        // 4. MAHASISWA
+        User::create([
+            'nip_nim' => '2388010001',
+            'nama' => 'Mahasiswa Praktikan',
+            'email' => 'mahasiswa@uin.ac.id',
+            'password' => Hash::make('password123'),
+            'role' => 'mahasiswa',
+            'status' => true,
+        ]);
 
         // 7. DUMMY MATA PRAKTIKUM
         MataPraktikum::updateOrCreate(
@@ -113,8 +84,7 @@ class DatabaseSeeder extends Seeder
 
         $dosen = User::where('role', 'dosen')->first();
         $asprak = User::where('role', 'asprak')->first();
-        $mahasiswa1 = User::where('nip_nim', '1227050002')->first();
-        $mahasiswa2 = User::where('nip_nim', '2388010026')->first();
+        $mahasiswa1 = User::where('role', 'mahasiswa')->first();
 
         if ($mp1) {
             $kelasA1 = \App\Models\KelasPraktikum::updateOrCreate(
@@ -151,9 +121,6 @@ class DatabaseSeeder extends Seeder
             // Mahasiswa A1
             if ($mahasiswa1) {
                 $kelasA1->mahasiswa()->syncWithoutDetaching([$mahasiswa1->id => ['tanggal_daftar' => now()]]);
-            }
-            if ($mahasiswa2) {
-                $kelasA1->mahasiswa()->syncWithoutDetaching([$mahasiswa2->id => ['tanggal_daftar' => now()]]);
             }
         }
 

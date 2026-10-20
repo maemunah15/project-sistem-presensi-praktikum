@@ -81,6 +81,12 @@
                 <p class="text-xs text-slate-500 mt-1">Masuk menggunakan NIP atau NIM yang telah terdaftar pada sistem SIPRAK.</p>
             </div>
 
+            @if($errors->any())
+                <div class="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs">
+                    {{ $errors->first() }}
+                </div>
+            @endif
+
             <!-- FORM LOGIN -->
             <form action="{{ route('login') }}" method="POST" class="space-y-4">
                 @csrf
@@ -111,55 +117,13 @@
                 <button type="submit" class="w-full py-3 bg-[#075c46] hover:bg-[#064b3b] text-white font-bold text-xs rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2">
                     Masuk ke Sistem →
                 </button>
-            </form>
-
-            <!-- KARTU AKUN UJI COBA -->
-            <div class="pt-4 border-t border-slate-100 space-y-3">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-xs font-bold text-slate-800">Akun Uji Coba</h3>
-                    <span class="text-[10px] text-slate-400">Khusus pengujian</span>
-                </div>
-
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                    <!-- Mahasiswa -->
-                    <button type="button" onclick="fillLogin('2026110012', 'password')" class="p-2.5 rounded-xl border border-emerald-100 bg-emerald-50/40 hover:bg-emerald-100/60 transition text-center group">
-                        <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto text-xs font-bold group-hover:scale-110 transition">🎓</div>
-                        <p class="text-[11px] font-bold text-emerald-950 mt-1.5">Mahasiswa</p>
-                    </button>
-
-                    <!-- Dosen -->
-                    <button type="button" onclick="fillLogin('198504122010122001', 'password')" class="p-2.5 rounded-xl border border-emerald-100 bg-emerald-50/40 hover:bg-emerald-100/60 transition text-center group">
-                        <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto text-xs font-bold group-hover:scale-110 transition">🧑‍🏫</div>
-                        <p class="text-[11px] font-bold text-emerald-950 mt-1.5">Dosen</p>
-                    </button>
-
-                    <!-- Asprak -->
-                    <button type="button" onclick="fillLogin('2026119999', 'password')" class="p-2.5 rounded-xl border border-emerald-100 bg-emerald-50/40 hover:bg-emerald-100/60 transition text-center group">
-                        <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto text-xs font-bold group-hover:scale-110 transition">👥</div>
-                        <p class="text-[11px] font-bold text-emerald-950 mt-1.5">Asprak</p>
-                    </button>
-
-                    <!-- Admin Lab -->
-                    <button type="button" onclick="fillLogin('admin', 'password')" class="p-2.5 rounded-xl border border-emerald-100 bg-emerald-50/40 hover:bg-emerald-100/60 transition text-center group">
-                        <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto text-xs font-bold group-hover:scale-110 transition">⚙️</div>
-                        <p class="text-[11px] font-bold text-emerald-950 mt-1.5">Admin Lab</p>
-                    </button>
-                </div>
-            </div>
-        </div>
+            </form>        </div>
 
         <footer class="pt-6 text-center text-[10px] text-slate-400">
             © {{ date('Y') }} SIPRAK · UIN Siber Syekh Nurjati Cirebon
         </footer>
     </div>
 </div>
-
-<script>
-    function fillLogin(username, password) {
-        document.getElementById('usernameInput').value = username;
-        document.getElementById('passwordInput').value = password;
-    }
-</script>
 
 </body>
 </html>

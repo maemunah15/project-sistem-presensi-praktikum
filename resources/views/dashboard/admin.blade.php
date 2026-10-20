@@ -200,100 +200,7 @@
 <div class="min-h-screen">
 
     <!-- SIDEBAR -->
-    <aside id="sidebar" class="sidebar fixed inset-y-0 left-0 w-[250px] flex flex-col z-50">
-
-        <div class="h-[80px] px-5 flex items-center gap-3 border-b border-white/10">
-            <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center p-1.5 shrink-0 shadow-sm">
-                <img src="{{ asset('image/Logo-UINSSC.png') }}"
-                     alt="Logo UINSSC"
-                     class="w-full h-full object-contain"
-                     onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Logo_UIN_Siber_Syekh_Nurjati_Cirebon.png/600px-Logo_UIN_Siber_Syekh_Nurjati_Cirebon.png';"
-                >
-            </div>
-
-            <div class="min-w-0">
-                <h1 class="text-[13.5px] font-bold text-white tracking-tight">SIPRAK</h1>
-                <p class="text-[9.5px] text-emerald-200/80 font-normal mt-0.5">Sistem Presensi Praktikum</p>
-            </div>
-        </div>
-
-        <div class="px-3 pt-4 pb-2 flex-1 overflow-y-auto space-y-4">
-            <div>
-                <div class="flex justify-between items-center px-2 mb-2">
-                    <span class="text-[9.5px] font-semibold tracking-wider text-emerald-200/60 uppercase">MENU UTAMA</span>
-                    <span class="text-[8.5px] font-medium text-emerald-200/40 bg-white/5 px-1.5 py-0.5 rounded">ADMIN</span>
-                </div>
-
-                <nav class="space-y-1">
-                    <a href="{{ url('/admin/dashboard?tab=master') }}" class="nav-link active">
-                        <span class="nav-icon">
-                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                                <rect x="3" y="4" width="18" height="16" rx="2"/>
-                                <path d="M3 9h18M9 9v11"/>
-                            </svg>
-                        </span>
-                        <span class="flex-1">Data Master</span>
-                        <span class="text-[8.5px] font-medium rounded px-1.5 py-0.5 bg-[#075c46]/10 text-[#075c46]" id="badgeCount">2</span>
-                    </a>
-
-                    <a href="{{ route('admin.akademik.index') }}" class="nav-link">
-                        <span class="nav-icon">
-                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 11h1m4 0h1m-6 4h1m4 0h1"/></svg>
-                        </span>
-                        <span class="flex-1">Manajemen Akademik</span>
-                        <span class="text-[10px] font-normal">›</span>
-                    </a>
-
-                    <a href="{{ route('admin.penugasan.index') }}" class="nav-link">
-                        <span class="nav-icon">
-                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20v-2a6 6 0 0 1 12 0v2z"/><path d="M16 15a5 5 0 0 1 5 5"/></svg>
-                        </span>
-                        <span class="flex-1">Penugasan &amp; Mapping</span>
-                    </a>
-
-                    <a href="{{ route('admin.laporan.index') }}" class="nav-link">
-                        <span class="nav-icon">
-                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19V5m0 14h17"/><path d="M8 15l4-4 3 2 5-7"/></svg>
-                        </span>
-                        <span class="flex-1">Rekap &amp; Laporan</span>
-                    </a>
-                </nav>
-            </div>
-
-            <div>
-                <div class="px-2 mb-2">
-                    <span class="text-[9.5px] font-semibold tracking-wider text-emerald-200/60 uppercase">SISTEM</span>
-                </div>
-
-                <nav class="space-y-1">
-                    <a href="{{ route('admin.users.index') }}" class="nav-link">
-                        <span class="nav-icon">
-                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>
-                        </span>
-                        <span class="flex-1">Kelola Akun Pengguna</span>
-                    </a>
-                </nav>
-            </div>
-        </div>
-
-        <div class="border-t border-white/10 p-3.5">
-            <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-full bg-emerald-700/80 border border-emerald-500/30 flex items-center justify-center text-white text-[11px] font-semibold">
-                    {{ substr(Auth::user()->nama ?? 'A', 0, 1) }}
-                </div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-[11.5px] font-semibold text-white truncate">{{ Auth::user()->nama ?? 'Admin Lab' }}</p>
-                    <p class="text-[9.5px] text-emerald-200/60 truncate font-normal">Administrator</p>
-                </div>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" title="Keluar" class="w-7 h-7 rounded-lg border border-white/10 flex items-center justify-center text-emerald-200 hover:bg-white/10 transition">
-                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7"/></svg>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </aside>
+    @include('partials.admin-sidebar', ['active' => 'master'])
 
     <!-- MAIN CONTENT AREA -->
     <div class="main-area ml-[250px] min-h-screen flex flex-col">
@@ -341,25 +248,40 @@
                 </button>
             </div>
 
+            @if(session('success'))
+                <div class="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-semibold flex justify-between items-center shadow-sm">
+                    <div class="flex items-center gap-2">
+                        <span>✅</span>
+                        <span>{{ session('success') }}</span>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="text-emerald-600 hover:text-emerald-900 text-base">&times;</button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="p-3.5 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs font-semibold flex justify-between items-center shadow-sm">
+                    <div class="flex items-center gap-2">
+                        <span>⚠️</span>
+                        <span>{{ session('error') }}</span>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="text-rose-600 hover:text-rose-900 text-base">&times;</button>
+                </div>
+            @endif
+
             <div class="flex gap-2 overflow-x-auto pb-1">
-                <button class="tab-btn active" onclick="switchTab('mahasiswa', this)">Mahasiswa</button>
-                <button class="tab-btn" onclick="switchTab('dosen', this)">Dosen</button>
-                <button class="tab-btn" onclick="switchTab('asisten', this)">Asisten Praktikum</button>
-                <button class="tab-btn" onclick="switchTab('laboratorium', this)">Laboratorium</button>
-                <button class="tab-btn" onclick="switchTab('matakuliah', this)">Mata Kuliah</button>
+                <button class="tab-btn {{ ($currentTab ?? 'mahasiswa') === 'mahasiswa' ? 'active' : '' }}" onclick="switchTab('mahasiswa', this)">Mahasiswa</button>
+                <button class="tab-btn {{ ($currentTab ?? '') === 'dosen' ? 'active' : '' }}" onclick="switchTab('dosen', this)">Dosen</button>
+                <button class="tab-btn {{ ($currentTab ?? '') === 'asisten' ? 'active' : '' }}" onclick="switchTab('asisten', this)">Asisten Praktikum</button>
+                <button class="tab-btn {{ ($currentTab ?? '') === 'laboratorium' ? 'active' : '' }}" onclick="switchTab('laboratorium', this)">Laboratorium</button>
+                <button class="tab-btn {{ ($currentTab ?? '') === 'matakuliah' ? 'active' : '' }}" onclick="switchTab('matakuliah', this)">Mata Kuliah</button>
             </div>
 
             <section class="surface overflow-hidden">
-                <div class="p-4 border-b border-[#edf1ef] flex flex-col sm:flex-row justify-between gap-3">
+                <div class="p-4 border-b border-[#edf1ef]">
                     <div class="relative w-full sm:max-w-[360px]">
                         <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
                         <input id="searchInput" type="search" class="field pl-9" placeholder="Cari data..." oninput="filterTable()">
                     </div>
-
-                    <button onclick="exportCSV()" class="px-3 py-2 rounded-lg border border-[#e1e9e5] text-xs font-semibold text-slate-700 hover:bg-slate-50 inline-flex items-center justify-center gap-2">
-                        <svg class="w-3.5 h-3.5 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m-5-5 5 5 5-5"/><path d="M4 16v4h16v-4"/></svg>
-                        Ekspor CSV
-                    </button>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -378,38 +300,47 @@
     </div>
 </div>
 
+<!-- FORM DELETE DATABASE (TERSEMBUNYI) -->
+<form id="deleteForm" method="POST" class="hidden">
+    @csrf
+    @method('DELETE')
+</form>
+
 <!-- MODAL TAMBAH DATA DINAMIS -->
-<div id="addModal" class="fixed inset-0 bg-black/40 z-50 hidden flex items-center justify-center p-4">
+<div id="addModal" class="fixed inset-0 bg-black/40 z-50 hidden items-center justify-center p-4" style="display: none;">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-xl">
         <div class="flex justify-between items-center border-b pb-3">
             <h3 class="text-sm font-bold text-slate-800" id="modalTitle">Tambah Data Master</h3>
             <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-lg">&times;</button>
         </div>
 
-        <form id="addForm" onsubmit="handleFormSubmit(event)" class="space-y-3">
+        <form id="addForm" action="{{ route('admin.master.store') }}" method="POST" class="space-y-3">
+            @csrf
+            <input type="hidden" name="tab" id="formTabInput" value="{{ $currentTab ?? 'mahasiswa' }}">
+
             <div>
                 <label class="block text-[11px] font-semibold text-slate-600 mb-1" id="labelCol1">NIM / NIP / KODE</label>
-                <input type="text" id="inputCol1" required class="field" placeholder="Masukkan ID / Kode">
+                <input type="text" id="inputCol1" name="col1" required class="field" placeholder="Masukkan ID / Kode">
             </div>
 
             <div>
                 <label class="block text-[11px] font-semibold text-slate-600 mb-1" id="labelCol2">Nama / Keterangan</label>
-                <input type="text" id="inputCol2" required class="field" placeholder="Masukkan Nama">
+                <input type="text" id="inputCol2" name="col2" required class="field" placeholder="Masukkan Nama">
             </div>
 
             <div id="containerCol3">
                 <label class="block text-[11px] font-semibold text-slate-600 mb-1" id="labelCol3">Program Studi / Detail</label>
-                <input type="text" id="inputCol3" class="field" placeholder="Masukkan Detail">
+                <input type="text" id="inputCol3" name="col3" class="field" placeholder="Masukkan Detail">
             </div>
 
             <div id="containerCol4" class="hidden">
                 <label class="block text-[11px] font-semibold text-slate-600 mb-1" id="labelCol4">PRAKTIKUM</label>
-                <input type="text" id="inputCol4" class="field" placeholder="Masukkan Nama Praktikum">
+                <input type="text" id="inputCol4" name="col4" class="field" placeholder="Masukkan Nama Praktikum">
             </div>
 
             <div class="flex justify-end gap-2 pt-2">
                 <button type="button" onclick="closeModal()" class="px-3 py-2 rounded-lg border text-xs font-semibold text-slate-600 hover:bg-slate-50">Batal</button>
-                <button type="submit" class="btn-primary">Simpan Data</button>
+                <button type="submit" class="btn-primary" id="btnSubmit">Simpan Data</button>
             </div>
         </form>
     </div>
@@ -418,36 +349,51 @@
 <script>
     const masterData = {
         mahasiswa: [
-            { col1: "12345", col2: "Akun Uji Coba", col3: "Teknik Informatika (Siber)", extra: "A2", status: "Aktif" },
-            { col1: "1004", col2: "Andi", col3: "Teknik Informatika (Siber)", extra: "A1", status: "Aktif" }
+            @if(isset($mahasiswas))
+                @foreach($mahasiswas as $m)
+                    { id: {{ $m->id }}, col1: "{{ $m->nip_nim }}", col2: "{{ addslashes($m->nama) }}", col3: "{{ $m->email }}", status: "{{ $m->status ? 'Aktif' : 'Nonaktif' }}" },
+                @endforeach
+            @endif
         ],
         dosen: [
-            { col1: "19850101", col2: "Dr. Ahmad, M.T.", col3: "Teknik Informatika", status: "Aktif" },
-            { col1: "19880202", col2: "Siti Aminah, M.Kom.", col3: "Sistem Informasi", status: "Aktif" },
-            { col1: "123456", col2: "Maryam, M.Kom", col3: "Informatika", status: "Aktif" }
+            @if(isset($dosens))
+                @foreach($dosens as $d)
+                    { id: {{ $d->id }}, col1: "{{ $d->nip_nim }}", col2: "{{ addslashes($d->nama) }}", col3: "{{ $d->email }}", status: "{{ $d->status ? 'Aktif' : 'Nonaktif' }}" },
+                @endforeach
+            @endif
         ],
         asisten: [
-            { col1: "200101", col2: "Siti Nurhaliza", col3: "Lab Komputer 1", extra: "Praktikum Web", status: "Aktif" },
-            { col1: "200102", col2: "Rahmat Hidayat", col3: "Lab Komputer 2", extra: "Praktikum Metopen", status: "Aktif" }
+            @if(isset($aspraks))
+                @foreach($aspraks as $a)
+                    { id: {{ $a->id }}, col1: "{{ $a->nip_nim }}", col2: "{{ addslashes($a->nama) }}", col3: "{{ $a->email }}", extra: "Lab Komputer", status: "{{ $a->status ? 'Aktif' : 'Nonaktif' }}" },
+                @endforeach
+            @endif
         ],
         laboratorium: [
-            { col1: "LAB-01", col2: "Lab Komputer 1", col3: "Gedung A Lt. 2", status: "Aktif" },
-            { col1: "LAB-02", col2: "Lab Komputer 2", col3: "Gedung B Lt. 1", status: "Aktif" },
-            { col1: "LAB-03", col2: "Lab Jaringan", col3: "Informatika", status: "Aktif" }
+            @if(isset($laboratoriums))
+                @foreach($laboratoriums as $lab)
+                    { id: "{{ $lab['kode'] }}", col1: "{{ $lab['kode'] }}", col2: "{{ addslashes($lab['nama']) }}", col3: "{{ $lab['lokasi'] }}", status: "Aktif" },
+                @endforeach
+            @endif
         ],
         matakuliah: [
-            { col1: "IF202", col2: "Pemrograman Web", col3: "3 SKS", extra: "Semester 3", status: "Aktif" },
-            { col1: "IF21", col2: "Metopen", col3: "3 SKS", extra: "Semester 6", status: "Aktif" },
-            { col1: "INF123", col2: "Logika Informatika", col3: "3 SKS", extra: "Semester 3", status: "Aktif" }
+            @if(isset($matakuliahs))
+                @foreach($matakuliahs as $mk)
+                    { id: {{ $mk->id }}, col1: "{{ $mk->kode }}", col2: "{{ addslashes($mk->nama) }}", col3: "{{ $mk->sks }} SKS", extra: "Semester {{ $mk->semester }}", status: "{{ $mk->status ? 'Aktif' : 'Nonaktif' }}" },
+                @endforeach
+            @endif
         ]
     };
 
-    let currentTab = 'mahasiswa';
+    let currentTab = "{{ $currentTab ?? 'mahasiswa' }}";
 
     function switchTab(tab, btn) {
         currentTab = tab;
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        if (btn) btn.classList.add('active');
+        const formTab = document.getElementById('formTabInput');
+        if (formTab) formTab.value = tab;
+        history.replaceState(null, '', '?tab=' + tab);
         renderTable();
     }
 
@@ -458,7 +404,7 @@
 
         let thHTML = '';
         if (currentTab === 'mahasiswa') {
-            thHTML = `<tr><th>NIM</th><th>NAMA</th><th>PROGRAM STUDI</th><th>KELAS</th><th>STATUS</th><th class="text-right">AKSI</th></tr>`;
+            thHTML = `<tr><th>NIM</th><th>NAMA</th><th>PROGRAM STUDI</th><th>STATUS</th><th class="text-right">AKSI</th></tr>`;
         } else if (currentTab === 'dosen') {
             thHTML = `<tr><th>NIP</th><th>NAMA DOSEN</th><th>PRODI</th><th>STATUS</th><th class="text-right">AKSI</th></tr>`;
         } else if (currentTab === 'asisten') {
@@ -475,7 +421,22 @@
             tbHTML = `<tr><td colspan="6" class="text-center p-6 text-slate-400">Belum ada data.</td></tr>`;
         } else {
             data.forEach((item, idx) => {
-                if (currentTab === 'asisten') {
+                if (currentTab === 'mahasiswa') {
+                    tbHTML += `
+                        <tr>
+                            <td class="font-bold text-slate-700">${item.col1}</td>
+                            <td class="font-semibold text-slate-800">${item.col2}</td>
+                            <td class="text-slate-500">${item.col3}</td>
+                            <td><span class="status-active">${item.status}</span></td>
+                            <td>
+                                <div class="flex items-center justify-end gap-3 font-semibold text-xs">
+                                    <button onclick="editData(${idx})" class="text-emerald-700 hover:underline">Ubah</button>
+                                    <button onclick="deleteData(${idx})" class="text-rose-600 hover:underline">Hapus</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                } else if (currentTab === 'asisten') {
                     tbHTML += `
                         <tr>
                             <td class="font-bold text-slate-700">${item.col1}</td>
@@ -526,7 +487,10 @@
             });
         }
         body.innerHTML = tbHTML;
-        document.getElementById('badgeCount').innerText = data.length;
+        const badge = document.getElementById('badgeCount');
+        if (badge) {
+            badge.innerText = data.length;
+        }
     }
 
     function openModal() {
@@ -541,25 +505,16 @@
         c4Container.classList.add('hidden');
 
         if (currentTab === 'asisten') {
-            l1.innerText = 'ID ASPRAK';
+            l1.innerText = 'ID / NIM ASPRAK';
             document.getElementById('inputCol1').placeholder = 'Contoh: 200103';
             
             l2.innerText = 'NAMA ASPRAK';
             document.getElementById('inputCol2').placeholder = 'Masukkan Nama Asprak';
             
             c3Container.innerHTML = `
-                <label class="block text-[11px] font-semibold text-slate-600 mb-1">ALOKASI LAB</label>
-                <select id="inputCol3" class="field" required>
-                    <option value="">-- Pilih Alokasi Lab --</option>
-                    <option value="Lab Komputer 1">Lab Komputer 1</option>
-                    <option value="Lab Komputer 2">Lab Komputer 2</option>
-                    <option value="Lab Jaringan">Lab Jaringan</option>
-                </select>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">PROGRAM STUDI / LAB</label>
+                <input type="text" id="inputCol3" name="col3" class="field" placeholder="Contoh: Teknik Informatika / Lab 1">
             `;
-
-            // Tampilkan field Praktikum
-            c4Container.classList.remove('hidden');
-            document.getElementById('inputCol4').placeholder = 'Contoh: Praktikum Web';
         } else if (currentTab === 'laboratorium') {
             l1.innerText = 'KODE LAB';
             document.getElementById('inputCol1').placeholder = 'Contoh: LAB-04';
@@ -569,73 +524,86 @@
             
             c3Container.innerHTML = `
                 <label class="block text-[11px] font-semibold text-slate-600 mb-1">LOKASI</label>
-                <select id="inputCol3" class="field" required>
-                    <option value="">-- Pilih Lokasi Lab --</option>
-                    <option value="Gedung A Lt. 2">Gedung A Lt. 2</option>
-                    <option value="Gedung B Lt. 1">Gedung B Lt. 1</option>
-                    <option value="Informatika">Informatika</option>
-                </select>
+                <input type="text" id="inputCol3" name="col3" class="field" placeholder="Contoh: Gedung A Lt. 2">
             `;
         } else if (currentTab === 'dosen') {
             l1.innerText = 'NIP';
-            document.getElementById('inputCol1').placeholder = 'Masukkan NIP';
+            document.getElementById('inputCol1').placeholder = 'Masukkan NIP Dosen';
             
             l2.innerText = 'NAMA DOSEN';
-            document.getElementById('inputCol2').placeholder = 'Masukkan Nama Dosen';
+            document.getElementById('inputCol2').placeholder = 'Masukkan Nama Lengkap beserta Gelar';
             
             c3Container.innerHTML = `
                 <label class="block text-[11px] font-semibold text-slate-600 mb-1">PROGRAM STUDI</label>
-                <input type="text" id="inputCol3" class="field" placeholder="Masukkan Program Studi">
+                <input type="text" id="inputCol3" name="col3" class="field" placeholder="Masukkan Program Studi">
             `;
-        } else {
-            l1.innerText = 'NIM / NIP / KODE';
-            document.getElementById('inputCol1').placeholder = 'Masukkan ID / Kode';
+        } else if (currentTab === 'matakuliah') {
+            l1.innerText = 'KODE MK';
+            document.getElementById('inputCol1').placeholder = 'Contoh: IF202';
             
-            l2.innerText = 'Nama / Keterangan';
-            document.getElementById('inputCol2').placeholder = 'Masukkan Nama';
+            l2.innerText = 'NAMA MATA KULIAH';
+            document.getElementById('inputCol2').placeholder = 'Contoh: Pemrograman Web';
             
             c3Container.innerHTML = `
-                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Program Studi / Detail</label>
-                <input type="text" id="inputCol3" class="field" placeholder="Masukkan Detail / Prodi">
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">JUMLAH SKS</label>
+                <input type="number" id="inputCol3" name="col3" class="field" value="3" placeholder="SKS">
+            `;
+
+            c4Container.classList.remove('hidden');
+            document.getElementById('inputCol4').placeholder = 'Semester (1-8)';
+        } else {
+            l1.innerText = 'NIM';
+            document.getElementById('inputCol1').placeholder = 'Masukkan NIM Mahasiswa';
+            
+            l2.innerText = 'NAMA MAHASISWA';
+            document.getElementById('inputCol2').placeholder = 'Masukkan Nama Mahasiswa';
+            
+            c3Container.innerHTML = `
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">PROGRAM STUDI</label>
+                <input type="text" id="inputCol3" name="col3" class="field" placeholder="Masukkan Program Studi">
             `;
         }
 
-        document.getElementById('addModal').classList.remove('hidden');
+        const modal = document.getElementById('addModal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            modal.style.display = 'flex';
+        }
     }
 
     function closeModal() {
-        document.getElementById('addModal').classList.add('hidden');
-        document.getElementById('addForm').reset();
-    }
-
-    function handleFormSubmit(e) {
-        e.preventDefault();
-        const c1 = document.getElementById('inputCol1').value;
-        const c2 = document.getElementById('inputCol2').value;
-        const c3 = document.getElementById('inputCol3').value;
-        const c4 = document.getElementById('inputCol4') ? document.getElementById('inputCol4').value : '';
-
-        masterData[currentTab].push({
-            col1: c1,
-            col2: c2,
-            col3: c3 || '-',
-            extra: c4 || '',
-            status: 'Aktif'
-        });
-
-        renderTable();
-        closeModal();
+        const modal = document.getElementById('addModal');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            modal.style.display = 'none';
+        }
+        const form = document.getElementById('addForm');
+        if (form) {
+            form.reset();
+        }
     }
 
     function deleteData(idx) {
-        if(confirm('Yakin ingin menghapus data ini?')) {
-            masterData[currentTab].splice(idx, 1);
-            renderTable();
+        const item = masterData[currentTab][idx];
+        if (!item) return;
+
+        if (confirm(`Yakin ingin menghapus data ${item.col2} dari database?`)) {
+            if (item.id) {
+                const form = document.getElementById('deleteForm');
+                form.action = `/admin/dashboard/${item.id}?tab=${currentTab}`;
+                form.submit();
+            } else {
+                masterData[currentTab].splice(idx, 1);
+                renderTable();
+            }
         }
     }
 
     function editData(idx) {
-        alert('Fitur ubah data ' + masterData[currentTab][idx].col2 + ' siap digunakan.');
+        const item = masterData[currentTab][idx];
+        alert('Data ' + item.col2 + ' (' + item.col1 + ') terdaftar aktif di Database MySQL.');
     }
 
     function filterTable() {
@@ -652,6 +620,20 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('addForm');
+        if (form) {
+            form.addEventListener('submit', function() {
+                closeModal();
+                const btn = document.getElementById('btnSubmit');
+                if (btn) {
+                    setTimeout(() => {
+                        btn.disabled = true;
+                        btn.innerHTML = 'Menyimpan ke Database...';
+                        btn.classList.add('opacity-75', 'cursor-not-allowed');
+                    }, 20);
+                }
+            });
+        }
         renderTable();
     });
 </script>

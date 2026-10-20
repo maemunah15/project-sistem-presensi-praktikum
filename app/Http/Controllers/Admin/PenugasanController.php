@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\KelasPraktikum;
+use App\Models\MataPraktikum;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,12 +16,16 @@ class PenugasanController extends Controller
      */
     public function index(Request $request)
     {
-        // PERBAIKAN: Menghapus .user karena pengajar dan mahasiswa sudah langsung merujuk ke model User
+        // Ambil kelas praktikum lengkap dengan hitungan pengajar dan mahasiswa
         $kelases = KelasPraktikum::with(['mataPraktikum', 'pengajar', 'mahasiswa'])
+            ->withCount(['pengajar', 'mahasiswa'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('admin.penugasan.index', compact('kelases'));
+        // Ambil daftar mata praktikum untuk form modal tambah kelas praktikum
+        $mataPraktikum = MataPraktikum::orderBy('nama', 'asc')->get();
+
+        return view('admin.penugasan.index', compact('kelases', 'mataPraktikum'));
     }
 
     /**
@@ -76,9 +81,18 @@ class PenugasanController extends Controller
     /**
      * Hapus Plotting Pengajar
      */
-    public function destroyPengajar($id)
+    public function destroyPengajar(Request $request, $id)
     {
-        DB::table('pengajar_kelas')->where('id', $id)->delete();
+        // $id adalah user_id pengajar atau id baris pengajar_kelas
+        $kelasId = $request->query('kelas_id');
+        if ($kelasId) {
+            DB::table('pengajar_kelas')
+                ->where('kelas_id', $kelasId)
+                ->where('user_id', $id)
+                ->delete();
+        } else {
+            DB::table('pengajar_kelas')->where('id', $id)->orWhere('user_id', $id)->delete();
+        }
         return redirect()->back()->with('success', 'Penugasan pengajar berhasil dihapus.');
     }
 
@@ -87,33 +101,58 @@ class PenugasanController extends Controller
      */
     public function storeMahasiswa(Request $request, $kelasId)
     {
-        $request->validate([
-            'mahasiswa_ids'   => 'required|array',
-            'mahasiswa_ids.*' => 'exists:users,id',
-        ]);
-
-        $data = [];
-        foreach ($request->mahasiswa_ids as $mhsId) {
-            $data[] = [
-                'kelas_id'       => $kelasId,
-                'mahasiswa_id'   => $mhsId,
-                'tanggal_daftar' => now(),
-                'created_at'     => now(),
-                'updated_at'     => now(),
-            ];
+        // Mendukung single user_id atau multiple mahasiswa_ids
+        $mhsIds = [];
+        if ($request->has('user_id') && !empty($request->user_id)) {
+            $mhsIds[] = $request->user_id;
+        } elseif ($request->has('mahasiswa_ids')) {
+            $mhsIds = is_array($request->mahasiswa_ids) ? $request->mahasiswa_ids : [$request->mahasiswa_ids];
         }
 
-        DB::table('mahasiswa_kelas')->insert($data);
+        if (empty($mhsIds)) {
+            return redirect()->back()->with('error', 'Silakan pilih mahasiswa terlebih dahulu.');
+        }
 
-        return redirect()->back()->with('success', count($data) . ' Mahasiswa berhasil ditambahkan ke kelas.');
+        $data = [];
+        foreach ($mhsIds as $mhsId) {
+            $exists = DB::table('mahasiswa_kelas')
+                ->where('kelas_id', $kelasId)
+                ->where('mahasiswa_id', $mhsId)
+                ->exists();
+
+            if (!$exists) {
+                $data[] = [
+                    'kelas_id'       => $kelasId,
+                    'mahasiswa_id'   => $mhsId,
+                    'tanggal_daftar' => now(),
+                    'created_at'     => now(),
+                    'updated_at'     => now(),
+                ];
+            }
+        }
+
+        if (!empty($data)) {
+            DB::table('mahasiswa_kelas')->insert($data);
+            return redirect()->back()->with('success', count($data) . ' Mahasiswa berhasil ditambahkan ke kelas.');
+        }
+
+        return redirect()->back()->with('info', 'Mahasiswa yang dipilih sudah terdaftar di kelas ini.');
     }
 
     /**
      * Keluarkan Mahasiswa dari Kelas
      */
-    public function destroyMahasiswa($id)
+    public function destroyMahasiswa(Request $request, $id)
     {
-        DB::table('mahasiswa_kelas')->where('id', $id)->delete();
+        $kelasId = $request->query('kelas_id');
+        if ($kelasId) {
+            DB::table('mahasiswa_kelas')
+                ->where('kelas_id', $kelasId)
+                ->where('mahasiswa_id', $id)
+                ->delete();
+        } else {
+            DB::table('mahasiswa_kelas')->where('id', $id)->orWhere('mahasiswa_id', $id)->delete();
+        }
         return redirect()->back()->with('success', 'Mahasiswa berhasil dikeluarkan dari kelas.');
     }
 }

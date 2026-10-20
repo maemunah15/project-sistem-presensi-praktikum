@@ -178,99 +178,8 @@
 
 <div class="min-h-screen">
 
-    <!-- SIDEBAR NAVIGATION -->
-    <aside id="sidebar" class="sidebar fixed inset-y-0 left-0 w-[250px] flex flex-col z-50">
-        <div class="h-[80px] px-5 flex items-center gap-3 border-b border-white/10">
-            <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center p-1.5 shrink-0 shadow-sm">
-                <img src="{{ asset('image/Logo-UINSSC.png') }}"
-                     alt="Logo UINSSC"
-                     class="w-full h-full object-contain"
-                     onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Logo_UIN_Siber_Syekh_Nurjati_Cirebon.png/600px-Logo_UIN_Siber_Syekh_Nurjati_Cirebon.png';"
-                >
-            </div>
-
-            <div class="min-w-0">
-                <h1 class="text-[13.5px] font-bold text-white tracking-tight">SIPRAK</h1>
-                <p class="text-[9.5px] text-emerald-200/80 font-normal mt-0.5">Sistem Presensi Praktikum</p>
-            </div>
-        </div>
-
-        <div class="px-3 pt-4 pb-2 flex-1 overflow-y-auto space-y-4">
-            <div>
-                <div class="flex justify-between items-center px-2 mb-2">
-                    <span class="text-[9.5px] font-semibold tracking-wider text-emerald-200/60 uppercase">MENU UTAMA</span>
-                    <span class="text-[8.5px] font-medium text-emerald-200/40 bg-white/5 px-1.5 py-0.5 rounded">ADMIN</span>
-                </div>
-
-                <nav class="space-y-1">
-                    <a href="{{ url('/admin/dashboard?tab=master') }}" class="nav-link">
-                        <span class="nav-icon">
-                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/></svg>
-                        </span>
-                        <span class="flex-1">Data Master</span>
-                    </a>
-
-                    <a href="{{ route('admin.akademik.index') }}" class="nav-link active">
-                        <span class="nav-icon">
-                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 11h1m4 0h1m-6 4h1m4 0h1"/></svg>
-                        </span>
-                        <span class="flex-1">Manajemen Akademik</span>
-                    </a>
-
-                    <a href="{{ route('admin.penugasan.index') }}" class="nav-link">
-                        <span class="nav-icon">
-                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20v-2a6 6 0 0 1 12 0v2z"/><path d="M16 15a5 5 0 0 1 5 5"/></svg>
-                        </span>
-                        <span class="flex-1">Penugasan &amp; Mapping</span>
-                    </a>
-
-                    <a href="{{ route('admin.laporan.index') }}" class="nav-link">
-                        <span class="nav-icon">
-                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19V5m0 14h17"/><path d="M8 15l4-4 3 2 5-7"/></svg>
-                        </span>
-                        <span class="flex-1">Rekap &amp; Laporan</span>
-                    </a>
-                </nav>
-            </div>
-
-            <div>
-                <div class="px-2 mb-2">
-                    <span class="text-[9.5px] font-semibold tracking-wider text-emerald-200/60 uppercase">SISTEM</span>
-                </div>
-                <nav class="space-y-1">
-                    <a href="{{ route('admin.users.index') }}" class="nav-link">
-                        <span class="nav-icon">
-                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>
-                        </span>
-                        <span class="flex-1">Kelola Akun Pengguna</span>
-                    </a>
-                </nav>
-            </div>
-        </div>
-
-        <div class="border-t border-white/10 p-3.5 flex items-center justify-between gap-2.5">
-            <div class="flex items-center gap-2.5 min-w-0">
-                <div class="w-8 h-8 rounded-full bg-emerald-700/80 border border-emerald-500/30 flex items-center justify-center text-white text-[11px] font-semibold shrink-0">
-                    {{ substr(Auth::user()->nama ?? 'A', 0, 1) }}
-                </div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-[11.5px] font-semibold text-white truncate">{{ Auth::user()->nama ?? 'Admin Lab' }}</p>
-                    <p class="text-[9.5px] text-emerald-200/60 truncate font-normal">Administrator</p>
-                </div>
-            </div>
-
-            <form action="{{ route('logout') }}" method="POST" class="shrink-0">
-                @csrf
-                <button type="submit" class="w-8 h-8 rounded-lg border border-white/10 bg-white/5 hover:bg-rose-600/80 hover:border-rose-500 text-emerald-200 hover:text-white flex items-center justify-center transition-all" title="Keluar / Logout">
-                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                        <polyline points="16 17 21 12 16 7"/>
-                        <line x1="21" y1="12" x2="9" y2="12"/>
-                    </svg>
-                </button>
-            </form>
-        </div>
-    </aside>
+    <!-- SIDEBAR -->
+    @include('partials.admin-sidebar', ['active' => 'akademik'])
 
     <!-- MAIN CONTENT AREA -->
     <div class="main-area ml-[250px] min-h-screen flex flex-col">
@@ -365,7 +274,12 @@
                                         <td class="font-semibold text-slate-800">{{ $mk->nama }}</td>
                                         <td>Semester {{ $mk->semester }}</td>
                                         <td class="font-semibold text-slate-600">{{ $mk->sks }} SKS</td>
-                                        <td class="text-right">
+                                        <td class="text-right flex items-center justify-end gap-3">
+                                            <button type="button" 
+                                                    onclick="openEditModalMK({{ $mk->id }}, '{{ addslashes($mk->kode) }}', '{{ addslashes($mk->nama) }}', {{ $mk->semester }}, {{ $mk->sks ?? 3 }})" 
+                                                    class="text-emerald-700 hover:underline font-semibold text-xs">
+                                                Edit
+                                            </button>
                                             <form action="{{ route('admin.mata_praktikum.destroy', $mk->id) }}" method="POST" onsubmit="return confirm('Hapus Mata Kuliah ini?')">
                                                 @csrf
                                                 @method('DELETE')
@@ -548,7 +462,7 @@
             @csrf
             <div>
                 <label class="block text-[11px] font-semibold text-slate-600 mb-1">Nama Kelas</label>
-                <input type="text" name="nama_kelas" required class="field" placeholder="Contoh: 4B">
+                <input type="text" name="nama_kelas" required class="field" placeholder="Contoh: 4B atau TI-2A">
             </div>
             <div>
                 <label class="block text-[11px] font-semibold text-slate-600 mb-1">Mata Praktikum</label>
@@ -559,9 +473,15 @@
                     @endforeach
                 </select>
             </div>
-            <div>
-                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Tahun Ajaran</label>
-                <input type="text" name="tahun_ajaran" value="2026/2027" required class="field">
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">Semester</label>
+                    <input type="number" name="semester" min="1" max="8" value="3" required class="field">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">Tahun Ajaran</label>
+                    <input type="text" name="tahun_ajaran" value="2026/2027" required class="field">
+                </div>
             </div>
             <div class="flex justify-end gap-2 pt-2">
                 <button type="button" onclick="closeModalKelas()" class="px-3 py-2 rounded-lg border text-xs font-semibold text-slate-600 hover:bg-slate-50">Batal</button>
@@ -583,12 +503,23 @@
             @csrf
             <div>
                 <label class="block text-[11px] font-semibold text-slate-600 mb-1">Pilih Kelas Praktikum</label>
-                <select name="kelas_id" class="field" required>
-                    <option value="">-- Pilih Kelas --</option>
+                <select id="jadwalKelasSelect" name="kelas_id" class="field" required onchange="updateJadwalMK(this)">
+                    <option value="" data-mk="-- Belum Ada Kelas Dipilih --">-- Pilih Kelas Praktikum --</option>
                     @foreach($kelasPraktikum as $kp)
-                        <option value="{{ $kp->id }}">{{ $kp->nama_kelas }} - {{ $kp->mataPraktikum->nama ?? 'Praktikum' }}</option>
+                        <option value="{{ $kp->id }}" data-mk="{{ $kp->mataPraktikum->nama ?? 'Praktikum' }} ({{ $kp->mataPraktikum->kode ?? '-' }})">
+                            {{ $kp->nama_kelas }} — {{ $kp->mataPraktikum->nama ?? 'Praktikum' }}
+                        </option>
                     @endforeach
                 </select>
+            </div>
+
+            <!-- Auto-populated MK Display -->
+            <div class="p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-100 flex items-center justify-between">
+                <div>
+                    <span class="block text-[10px] font-bold uppercase text-emerald-800 tracking-wider">Mata Kuliah Praktikum</span>
+                    <span id="selectedMKLabel" class="text-xs font-semibold text-emerald-950">-- Otomatis terisi saat memilih kelas --</span>
+                </div>
+                <span class="text-emerald-700">📚</span>
             </div>
 
             <div>
@@ -599,6 +530,7 @@
                     <option value="Rabu">Rabu</option>
                     <option value="Kamis">Kamis</option>
                     <option value="Jumat">Jumat</option>
+                    <option value="Sabtu">Sabtu</option>
                 </select>
             </div>
 
@@ -614,18 +546,50 @@
             </div>
 
             <div>
-                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Laboratorium</label>
-                <select name="ruangan_lab" class="field" required>
-                    <option value="Lab Informatika 1">Lab Informatika 1</option>
-                    <option value="Lab Komputer 1">Lab Komputer 1</option>
-                    <option value="Lab Komputer 2">Lab Komputer 2</option>
-                    <option value="Lab Jaringan Komputer">Lab Jaringan Komputer</option>
-                </select>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Laboratorium (Ketik Nama/Ruang Lab)</label>
+                <input type="text" name="ruangan_lab" required class="field" placeholder="Ketik nama lab, contoh: Lab Komputer 1 / Lab Jaringan">
             </div>
 
             <div class="flex justify-end gap-2 pt-2">
                 <button type="button" onclick="closeModalJadwal()" class="px-3 py-2 rounded-lg border text-xs font-semibold text-slate-600 hover:bg-slate-50">Batal</button>
                 <button type="submit" class="btn-primary">Simpan Jadwal</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL EDIT MATA KULIAH -->
+<div id="modalEditMK" class="fixed inset-0 bg-black/40 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-xl">
+        <div class="flex justify-between items-center border-b pb-3">
+            <h3 class="text-sm font-bold text-slate-800">Edit Mata Kuliah</h3>
+            <button onclick="closeEditModalMK()" class="text-slate-400 hover:text-slate-600 text-lg">&times;</button>
+        </div>
+
+        <form id="formEditMK" method="POST" class="space-y-3">
+            @csrf
+            @method('PUT')
+            <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Kode MK</label>
+                <input type="text" id="edit_kode" name="kode" required class="field">
+            </div>
+            <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Nama Mata Kuliah</label>
+                <input type="text" id="edit_nama" name="nama" required class="field">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">Semester</label>
+                    <input type="number" id="edit_semester" name="semester" required class="field">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">SKS</label>
+                    <input type="number" id="edit_sks" name="sks" required class="field">
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button type="button" onclick="closeEditModalMK()" class="px-3 py-2 rounded-lg border text-xs font-semibold text-slate-600 hover:bg-slate-50">Batal</button>
+                <button type="submit" class="btn-primary">Perbarui</button>
             </div>
         </form>
     </div>
@@ -640,11 +604,56 @@
     function openModalMK() { document.getElementById('modalMK').classList.remove('hidden'); }
     function closeModalMK() { document.getElementById('modalMK').classList.add('hidden'); }
 
+    function openEditModalMK(id, kode, nama, semester, sks) {
+        document.getElementById('formEditMK').action = '/admin/akademik/mata-praktikum/' + id;
+        document.getElementById('edit_kode').value = kode;
+        document.getElementById('edit_nama').value = nama;
+        document.getElementById('edit_semester').value = semester;
+        document.getElementById('edit_sks').value = sks;
+        document.getElementById('modalEditMK').classList.remove('hidden');
+    }
+    function closeEditModalMK() { document.getElementById('modalEditMK').classList.add('hidden'); }
+
     function openModalKelas() { document.getElementById('modalKelas').classList.remove('hidden'); }
     function closeModalKelas() { document.getElementById('modalKelas').classList.add('hidden'); }
 
-    function openModalJadwal() { document.getElementById('modalJadwal').classList.remove('hidden'); }
+    function openModalJadwal() { 
+        document.getElementById('modalJadwal').classList.remove('hidden'); 
+        const select = document.getElementById('jadwalKelasSelect');
+        if (select) {
+            updateJadwalMK(select);
+        }
+    }
     function closeModalJadwal() { document.getElementById('modalJadwal').classList.add('hidden'); }
+
+    function updateJadwalMK(selectEl) {
+        const selectedOption = selectEl.options[selectEl.selectedIndex];
+        const mkName = selectedOption ? selectedOption.getAttribute('data-mk') : '-- Belum Ada Kelas Dipilih --';
+        const label = document.getElementById('selectedMKLabel');
+        if (label) {
+            label.textContent = mkName || '-- Belum Ada Kelas Dipilih --';
+        }
+    }
+
+    // Auto-close modal segera setelah tombol Simpan ditekan dan cegah double-submit
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('#modalMK form, #modalKelas form, #modalJadwal form, #modalEditMK form').forEach(form => {
+            form.addEventListener('submit', function() {
+                const modal = this.closest('.fixed');
+                if (modal) {
+                    modal.classList.add('hidden');
+                }
+                const btn = this.querySelector('button[type="submit"]');
+                if (btn) {
+                    setTimeout(() => {
+                        btn.disabled = true;
+                        btn.innerHTML = 'Menyimpan...';
+                        btn.classList.add('opacity-75', 'cursor-not-allowed');
+                    }, 20);
+                }
+            });
+        });
+    });
 </script>
 
 </body>
