@@ -39,71 +39,7 @@
 <div class="min-h-screen">
 
     <!-- SIDEBAR NAVIGATION -->
-    <aside id="sidebar" class="sidebar fixed inset-y-0 left-0 w-[250px] flex flex-col z-50">
-        <div class="h-[80px] px-5 flex items-center gap-3 border-b border-white/10">
-            <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center p-1.5 shrink-0 shadow-sm">
-                <img src="{{ asset('image/Logo-UINSSC.png') }}" alt="Logo UINSSC" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Logo_UIN_Siber_Syekh_Nurjati_Cirebon.png/600px-Logo_UIN_Siber_Syekh_Nurjati_Cirebon.png';">
-            </div>
-            <div class="min-w-0">
-                <h1 class="text-[13.5px] font-bold text-white tracking-tight">SIPRAK</h1>
-                <p class="text-[9.5px] text-emerald-200/80 font-normal mt-0.5">Sistem Presensi Praktikum</p>
-            </div>
-        </div>
-
-        <div class="px-3 pt-4 pb-2 flex-1 overflow-y-auto space-y-1">
-            <!-- 1. Dashboard (ACTIVE) -->
-            <a href="{{ route('asprak.dashboard') }}" class="nav-link active">
-                <span class="nav-icon">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                </span>
-                <span class="flex-1">Dashboard</span>
-            </a>
-
-            <!-- 2. Sesi Presensi -->
-            <a href="{{ route('asprak.sesi.index') }}" class="nav-link">
-                <span class="nav-icon">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                </span>
-                <span class="flex-1">Sesi Presensi</span>
-            </a>
-
-            <!-- 3. Monitoring Presensi -->
-            <a href="{{ route('asprak.monitoring.index') }}" class="nav-link">
-                <span class="nav-icon">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                </span>
-                <span class="flex-1">Monitoring Presensi</span>
-            </a>
-
-            <!-- 4. Verifikasi Izin/Sakit -->
-            <a href="{{ route('asprak.verifikasi.index') }}" class="nav-link">
-                <span class="nav-icon">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                </span>
-                <span class="flex-1">Verifikasi Izin/Sakit</span>
-            </a>
-        </div>
-
-        <!-- FOOTER USER SIDEBAR -->
-        <div class="border-t border-white/10 p-3.5 flex items-center justify-between gap-2.5">
-            <div class="flex items-center gap-2.5 min-w-0">
-                <div class="w-8 h-8 rounded-full bg-emerald-700/80 border border-emerald-500/30 flex items-center justify-center text-white text-[11px] font-semibold shrink-0">
-                    A
-                </div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-[11.5px] font-semibold text-white truncate">{{ Auth::user()->nama ?? 'Asisten Praktikum' }}</p>
-                    <p class="text-[9.5px] text-emerald-200/60 truncate font-normal">Pengajar Praktikum</p>
-                </div>
-            </div>
-
-            <form action="{{ route('logout') }}" method="POST" class="shrink-0">
-                @csrf
-                <button type="submit" class="w-8 h-8 rounded-lg border border-white/10 bg-white/5 hover:bg-rose-600/80 text-emerald-200 hover:text-white flex items-center justify-center transition-all" title="Keluar">
-                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                </button>
-            </form>
-        </div>
-    </aside>
+    @include('partials.asprak-sidebar', ['active' => 'dashboard'])
 
     <!-- MAIN AREA -->
     <div class="main-area ml-[250px] min-h-screen flex flex-col">
@@ -148,13 +84,16 @@
             </div>
 
             <!-- SECTION 1: SESI PRAKTIKUM HARI INI -->
-            <div class="surface p-5 space-y-4">
+            <div class="surface p-5 space-y-4 shadow-sm">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                         <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Sesi Praktikum Hari Ini</h3>
                     </div>
-                    <a href="{{ route('asprak.sesi.index') }}" class="text-xs font-semibold text-emerald-700 hover:underline flex items-center gap-1">Lihat Semua →</a>
+                    <a href="{{ route('asprak.sesi.index') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/70 transition shadow-xs">
+                        <span>Lihat Semua Sesi</span>
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -175,7 +114,7 @@
                                 <td class="p-3 pl-4 font-semibold text-slate-400">1</td>
                                 <td class="p-3 font-bold text-slate-800">
                                     Pemrograman Web
-                                    <span class="block text-[10px] font-normal text-slate-400">Kelas A</span>
+                                    <span class="block text-[10px] font-normal text-slate-400">Kelas A · Pertemuan 5</span>
                                 </td>
                                 <td class="p-3 font-medium">A</td>
                                 <td class="p-3">10.00 – 12.00</td>
@@ -184,9 +123,9 @@
                                     <span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-semibold">Belum dimulai</span>
                                 </td>
                                 <td class="p-3 text-right pr-4">
-                                    <a href="{{ route('asprak.sesi.index') }}" class="btn-primary inline-flex items-center gap-1">
+                                    <a href="{{ route('asprak.sesi.index') }}" class="btn-primary inline-flex items-center gap-1.5 shadow-xs">
                                         <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                                        Buka Sesi Presensi
+                                        <span>Buka Sesi Presensi</span>
                                     </a>
                                 </td>
                             </tr>
@@ -194,7 +133,7 @@
                                 <td class="p-3 pl-4 font-semibold text-slate-400">2</td>
                                 <td class="p-3 font-bold text-slate-800">
                                     Basis Data
-                                    <span class="block text-[10px] font-normal text-slate-400">Kelas B</span>
+                                    <span class="block text-[10px] font-normal text-slate-400">Kelas B · Pertemuan 4</span>
                                 </td>
                                 <td class="p-3 font-medium">B</td>
                                 <td class="p-3">13.00 – 15.00</td>
@@ -203,7 +142,7 @@
                                     <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-semibold">Selesai</span>
                                 </td>
                                 <td class="p-3 text-right pr-4">
-                                    <button class="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 transition">Lihat Detail</button>
+                                    <a href="{{ route('asprak.sesi.index') }}" class="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 transition inline-block">Lihat Detail</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -212,27 +151,39 @@
             </div>
 
             <!-- SECTION 2: RINGKASAN KEHADIRAN AKTIF -->
-            <div class="surface p-5 space-y-4">
+            <div class="surface p-5 space-y-4 shadow-sm">
                 <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
                     <svg class="w-4 h-4 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-                    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Ringkasan Kehadiran Aktif</h3>
+                    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Ringkasan Kehadiran Sesi Berjalan</h3>
                 </div>
 
-                <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="space-y-1 text-center md:text-left">
-                        <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold inline-block mb-1">● Sesi Aktif</span>
+                <div class="p-4 bg-slate-50/80 rounded-xl border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="space-y-1.5 text-center md:text-left">
+                        <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold inline-flex items-center gap-1.5 mb-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                            Sesi Presensi Aktif
+                        </span>
                         <h4 class="text-sm font-bold text-slate-800">Pemrograman Web — Kelas A</h4>
-                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 text-xs text-slate-400 pt-1">
-                            <span>📅 Senin, 19 Oktober 2026</span>
-                            <span>⏰ 10.00 – 12.00</span>
-                            <span>📍 Lab Komputer 2</span>
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs text-slate-500 pt-1">
+                            <span class="inline-flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                Senin, 19 Oktober 2026
+                            </span>
+                            <span class="inline-flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                10.00 – 12.00 WIB
+                            </span>
+                            <span class="inline-flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                Lab Komputer 2
+                            </span>
                         </div>
                     </div>
 
                     <div class="flex items-center gap-8">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
-                                👤
+                            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
                             </div>
                             <div>
                                 <p class="text-xl font-bold text-slate-800">24</p>
@@ -241,8 +192,8 @@
                         </div>
 
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-slate-200 text-slate-600 flex items-center justify-center font-bold">
-                                👤
+                            <div class="w-10 h-10 rounded-xl bg-slate-200 text-slate-600 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><circle cx="19" cy="11" r="2"/></svg>
                             </div>
                             <div>
                                 <p class="text-xl font-bold text-slate-800">8</p>
@@ -259,13 +210,16 @@
             </div>
 
             <!-- SECTION 3: PENGAJUAN IZIN/SAKIT MENUNGGU VERIFIKASI -->
-            <div class="surface p-5 space-y-4">
+            <div class="surface p-5 space-y-4 shadow-sm">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                         <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Pengajuan Izin/Sakit Menunggu Verifikasi</h3>
                     </div>
-                    <a href="{{ route('asprak.verifikasi.index') }}" class="text-xs font-semibold text-emerald-700 hover:underline flex items-center gap-1">Lihat Semua →</a>
+                    <a href="{{ route('asprak.verifikasi.index') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/70 transition shadow-xs">
+                        <span>Lihat Semua Pengajuan</span>
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -287,21 +241,28 @@
                             <tr>
                                 <td class="p-3 pl-4 font-semibold text-slate-400">1</td>
                                 <td class="p-3 font-bold text-slate-800">Siti Nurhaliza</td>
-                                <td class="p-3 text-slate-500">2026110012</td>
+                                <td class="p-3 text-slate-500 font-mono">2026110012</td>
                                 <td class="p-3">Pemrograman Web Kelas A</td>
                                 <td class="p-3">Pertemuan 5</td>
                                 <td class="p-3">
                                     <span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-semibold">Sakit (demam)</span>
                                 </td>
                                 <td class="p-3">
-                                    <a href="#" class="text-emerald-700 hover:underline flex items-center gap-1 font-semibold">
-                                        📄 surat-dokter.pdf
+                                    <a href="#" class="text-emerald-700 hover:underline inline-flex items-center gap-1 font-semibold">
+                                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                        <span>surat-dokter.pdf</span>
                                     </a>
                                 </td>
                                 <td class="p-3 text-slate-400">19 Okt 2026 08:45</td>
                                 <td class="p-3 text-right pr-4 space-x-1">
-                                    <button onclick="alert('Pengajuan Ditolak')" class="px-2.5 py-1 bg-rose-600 text-white font-semibold rounded-lg hover:bg-rose-700">✕ Tolak</button>
-                                    <button onclick="alert('Pengajuan Disetujui')" class="px-2.5 py-1 bg-emerald-700 text-white font-semibold rounded-lg hover:bg-emerald-800">✓ Setujui</button>
+                                    <button onclick="alert('Pengajuan Ditolak')" class="px-2.5 py-1 bg-rose-600 text-white font-semibold rounded-lg hover:bg-rose-700 inline-flex items-center gap-1 transition">
+                                        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Tolak</span>
+                                    </button>
+                                    <button onclick="alert('Pengajuan Disetujui')" class="px-2.5 py-1 bg-emerald-700 text-white font-semibold rounded-lg hover:bg-emerald-800 inline-flex items-center gap-1 transition">
+                                        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Setujui</span>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>

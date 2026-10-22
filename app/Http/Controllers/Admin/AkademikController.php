@@ -143,7 +143,7 @@ class AkademikController extends Controller
             ->with('success', 'Kelas Praktikum berhasil diperbarui!');
     }
 
-    public function destroyKelas($id)
+    public function destroyKelas(Request $request, $id)
     {
         try {
             DB::beginTransaction();
@@ -158,10 +158,20 @@ class AkademikController extends Controller
 
             DB::commit();
 
+            if ($request->query('redirect_to') === 'penugasan') {
+                return redirect()->route('admin.penugasan.index')
+                    ->with('success', 'Kelas Praktikum beserta seluruh data penugasannya berhasil dihapus!');
+            }
+
             return redirect()->route('admin.akademik.index', ['tab' => 'kelas'])
                 ->with('success', 'Kelas Praktikum beserta data penugasannya berhasil dihapus!');
         } catch (\Exception $e) {
             DB::rollBack();
+
+            if ($request->query('redirect_to') === 'penugasan') {
+                return redirect()->route('admin.penugasan.index')
+                    ->with('error', 'Gagal menghapus kelas karena terikat dengan data presensi atau sesi praktikum.');
+            }
 
             return redirect()->route('admin.akademik.index', ['tab' => 'kelas'])
                 ->with('error', 'Gagal menghapus kelas karena terikat dengan data presensi harian.');

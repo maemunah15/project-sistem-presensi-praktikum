@@ -37,7 +37,9 @@ Route::post('/login', function (Request $request) {
             || $credentials['password'] === 'password123';
 
         if ($passwordMatches) {
-            \Illuminate\Support\Facades\Auth::login($user);
+            $remember = $request->boolean('remember');
+            \Illuminate\Support\Facades\Auth::login($user, $remember);
+            $request->session()->regenerate();
 
             // Arahkan ke dashboard berdasarkan role user
             return match ($user->role) {
@@ -53,8 +55,10 @@ Route::post('/login', function (Request $request) {
     return back()->withErrors(['username' => 'NIP/NIM atau password salah.'])->withInput();
 });
 
-Route::post('/logout', function () {
+Route::post('/logout', function (Request $request) {
     \Illuminate\Support\Facades\Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
     return redirect()->route('login');
 })->name('logout');
 
@@ -79,7 +83,7 @@ Route::get('/dosen/laporan', function () {
 
 // --- 3. ASPRAK GROUP ROUTES ---
 Route::get('/asprak/dashboard', function () {
-    return view('dashboard.aprak');
+    return view('dashboard.asprak');
 })->name('asprak.dashboard');
 
 Route::get('/asprak/sesi', function () {

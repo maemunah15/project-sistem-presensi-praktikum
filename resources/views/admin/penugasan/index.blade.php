@@ -206,22 +206,46 @@
             </div>
 
             @if(session('success'))
-                <div class="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-medium flex justify-between items-center shadow-sm">
-                    <span>{{ session('success') }}</span>
-                    <button onclick="this.parentElement.remove()">&times;</button>
+                <div class="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-medium flex justify-between items-center shadow-sm">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        <span>{{ session('success') }}</span>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="text-emerald-700 hover:text-emerald-900">&times;</button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="p-3.5 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs font-medium flex justify-between items-center shadow-sm">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-rose-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span>{{ session('error') }}</span>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="text-rose-700 hover:text-rose-900">&times;</button>
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="p-3.5 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs font-medium space-y-1 shadow-sm">
+                    <div class="font-bold">Terjadi kesalahan pengisian form:</div>
+                    <ul class="list-disc list-inside text-[11px] text-rose-700">
+                        @foreach($errors->all() as $err)
+                            <li>{{ $err }}</li>
+                        @endforeach
+                    </ul>
                 </div>
             @endif
 
             <!-- TABLE CARD -->
-            <section class="surface overflow-hidden">
-                <div class="p-4 border-b border-[#edf1ef] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <section class="surface overflow-hidden shadow-sm">
+                <div class="p-4 border-b border-[#edf1ef] flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white">
                     <div>
                         <h3 class="text-xs font-bold text-slate-800">Daftar Kelas Praktikum Aktif</h3>
                         <p class="text-[11px] text-slate-400 mt-0.5">Pilih kelas untuk mengelola plotting Dosen, Asprak, dan Mahasiswa.</p>
                     </div>
-                    <button type="button" onclick="openModalKelas()" class="btn-primary inline-flex items-center gap-1.5 self-start sm:self-auto shadow-sm">
-                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-                        <span>+ Tambah Kelas Praktikum</span>
+                    <button type="button" onclick="openModalKelas()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#075c46] hover:bg-[#064b3b] text-white text-xs font-bold shadow-sm hover:shadow transition self-start sm:self-auto cursor-pointer">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                        <span>Tambah Kelas Praktikum</span>
                     </button>
                 </div>
 
@@ -253,31 +277,42 @@
                                         </td>
                                         <td>
                                             <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[11px] font-semibold">
-                                                👨‍🏫 {{ $k->pengajar_count ?? ($k->pengajar ? $k->pengajar->count() : 0) }} Pengajar
+                                                 {{ $k->pengajar_count ?? ($k->pengajar ? $k->pengajar->count() : 0) }} Pengajar
                                             </span>
                                         </td>
                                         <td>
                                             <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[11px] font-semibold">
-                                                🎓 {{ $k->mahasiswa_count ?? ($k->mahasiswa ? $k->mahasiswa->count() : 0) }} Mahasiswa
+                                                 {{ $k->mahasiswa_count ?? ($k->mahasiswa ? $k->mahasiswa->count() : 0) }} Mahasiswa
                                             </span>
                                         </td>
                                         <td class="text-right">
-                                            <a href="{{ route('admin.penugasan.show', $k->id) }}" class="btn-primary inline-flex items-center gap-1.5">
-                                                <span>Kelola &amp; Tambah Data</span>
-                                                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                                                </svg>
-                                            </a>
+                                            <div class="inline-flex items-center gap-2 justify-end">
+                                                <a href="{{ route('admin.penugasan.show', $k->id) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#075c46] hover:bg-[#064b3b] text-white text-xs font-semibold shadow-xs transition">
+                                                    <span>Kelola &amp; Mapping</span>
+                                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                                    </svg>
+                                                </a>
+                                                <form action="{{ route('admin.kelas.destroy', $k->id) }}?redirect_to=penugasan" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kelas {{ $k->nama_kelas }} ({{ $k->mataPraktikum->nama ?? '-' }}) beserta seluruh data penugasan pengajar dan mahasiswanya?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold transition" title="Hapus Kelas Ini">
+                                                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                                                        <span>Hapus</span>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
                                     <td colspan="6" class="text-center p-8 text-slate-400">
-                                        <div class="space-y-2">
+                                        <div class="space-y-3">
                                             <p class="font-medium text-slate-500">Belum ada kelas praktikum yang terdaftar.</p>
-                                            <button type="button" onclick="openModalKelas()" class="btn-primary inline-flex items-center gap-1.5 text-xs">
-                                                <span>+ Tambah Kelas Praktikum Pertama</span>
+                                            <button type="button" onclick="openModalKelas()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#075c46] hover:bg-[#064b3b] text-white text-xs font-bold shadow-sm transition">
+                                                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                                                <span>Tambah Kelas Praktikum Pertama</span>
                                             </button>
                                         </div>
                                     </td>
@@ -303,48 +338,56 @@
 </div>
 
 <!-- MODAL TAMBAH KELAS PRAKTIKUM -->
-<div id="modalKelas" class="fixed inset-0 bg-black/40 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-xl">
+<div id="modalKelas" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-100 transform transition-all" onclick="event.stopPropagation()">
         <div class="flex justify-between items-center border-b pb-3">
-            <h3 class="text-sm font-bold text-slate-800">Tambah Kelas Praktikum</h3>
-            <button type="button" onclick="closeModalKelas()" class="text-slate-400 hover:text-slate-600 text-lg">&times;</button>
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center font-bold">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-slate-800">Tambah Kelas Praktikum</h3>
+                    <p class="text-[11px] text-slate-400">Tambahkan kelas baru ke daftar penugasan</p>
+                </div>
+            </div>
+            <button type="button" onclick="closeModalKelas()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center text-lg leading-none">&times;</button>
         </div>
 
-        <form action="{{ route('admin.kelas.store') }}" method="POST" class="space-y-3">
+        <form action="{{ route('admin.kelas.store') }}" method="POST" class="space-y-3.5" id="formTambahKelas">
             @csrf
             <input type="hidden" name="redirect_to" value="penugasan">
 
             <div>
-                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Nama Kelas</label>
-                <input type="text" name="nama_kelas" required class="field" placeholder="Contoh: 4B atau TI-2A">
-            </div>
-
-            <div>
-                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Mata Praktikum</label>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Mata Praktikum <span class="text-rose-500">*</span></label>
                 <select name="mata_praktikum_id" class="field" required>
                     <option value="">-- Pilih Mata Praktikum --</option>
                     @if(isset($mataPraktikum))
                         @foreach($mataPraktikum as $mk)
-                            <option value="{{ $mk->id }}">{{ $mk->nama }} ({{ $mk->kode }})</option>
+                            <option value="{{ $mk->id }}">{{ $mk->nama }} ({{ $mk->kode ?? 'MK' }})</option>
                         @endforeach
                     @endif
                 </select>
             </div>
 
+            <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Nama Kelas <span class="text-rose-500">*</span></label>
+                <input type="text" name="nama_kelas" required class="field" placeholder="Contoh: 4B, 3A, atau TI-2B">
+            </div>
+
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">Semester</label>
+                    <label class="block text-[11px] font-semibold text-slate-700 mb-1">Semester <span class="text-rose-500">*</span></label>
                     <input type="number" name="semester" min="1" max="8" value="3" required class="field">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">Tahun Ajaran</label>
+                    <label class="block text-[11px] font-semibold text-slate-700 mb-1">Tahun Ajaran <span class="text-rose-500">*</span></label>
                     <input type="text" name="tahun_ajaran" value="2026/2027" required class="field">
                 </div>
             </div>
 
-            <div class="flex justify-end gap-2 pt-2">
-                <button type="button" onclick="closeModalKelas()" class="px-3 py-2 rounded-lg border text-xs font-semibold text-slate-600 hover:bg-slate-50">Batal</button>
-                <button type="submit" class="btn-primary">Simpan Kelas</button>
+            <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
+                <button type="button" onclick="closeModalKelas()" class="px-4 py-2 rounded-xl border text-xs font-semibold text-slate-600 hover:bg-slate-50 transition">Batal</button>
+                <button type="submit" id="btnSubmitKelas" class="px-4 py-2 rounded-xl bg-[#075c46] hover:bg-[#064b3b] text-white text-xs font-bold shadow-sm transition">Simpan Kelas</button>
             </div>
         </form>
     </div>
@@ -358,29 +401,31 @@
 
     function openModalKelas() {
         const modal = document.getElementById('modalKelas');
-        if (modal) modal.classList.remove('hidden');
+        if (modal) {
+            modal.classList.remove('hidden');
+        }
     }
 
     function closeModalKelas() {
         const modal = document.getElementById('modalKelas');
-        if (modal) modal.classList.add('hidden');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
     }
 
-    // Auto-close modal segera saat submit dan cegah double-submit
-    document.addEventListener('DOMContentLoaded', () => {
-        const form = document.querySelector('#modalKelas form');
-        if (form) {
-            form.addEventListener('submit', function() {
-                closeModalKelas();
-                const btn = this.querySelector('button[type="submit"]');
-                if (btn) {
-                    setTimeout(() => {
-                        btn.disabled = true;
-                        btn.innerHTML = 'Menyimpan...';
-                        btn.classList.add('opacity-75', 'cursor-not-allowed');
-                    }, 20);
-                }
-            });
+    // Tutup jika klik di area backdrop hitam
+    document.getElementById('modalKelas')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModalKelas();
+        }
+    });
+
+    // Cegah submit kosong / ganda
+    document.getElementById('formTambahKelas')?.addEventListener('submit', function(e) {
+        const btn = document.getElementById('btnSubmitKelas');
+        if (btn) {
+            btn.innerHTML = 'Menyimpan...';
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
         }
     });
 </script>

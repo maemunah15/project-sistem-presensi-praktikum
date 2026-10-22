@@ -107,8 +107,8 @@
                 </div>
 
                 <div class="flex items-center justify-between text-xs pt-1">
-                    <label class="flex items-center gap-2 cursor-pointer text-slate-600 font-medium">
-                        <input type="checkbox" class="rounded border-slate-300 text-emerald-700 focus:ring-emerald-600">
+                    <label class="flex items-center gap-2 cursor-pointer text-slate-600 font-medium select-none">
+                        <input type="checkbox" name="remember" id="remember" value="1" {{ old('remember') ? 'checked' : '' }} class="rounded border-slate-300 text-emerald-700 focus:ring-emerald-600">
                         Ingat perangkat ini
                     </label>
                     <a href="#" class="text-emerald-700 font-semibold hover:underline">Butuh bantuan? Hubungi Admin</a>

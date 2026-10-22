@@ -54,7 +54,8 @@ class AuthController extends Controller
                 }
                 $user->save();
 
-                Auth::login($user);
+                $remember = $request->boolean('remember');
+                Auth::login($user, $remember);
                 $request->session()->regenerate();
 
                 return $this->redirectBasedOnRole($user->role);
@@ -81,7 +82,8 @@ class AuthController extends Controller
                     'status'   => true,
                 ]);
 
-                Auth::login($user);
+                $remember = $request->boolean('remember');
+                Auth::login($user, $remember);
                 $request->session()->regenerate();
 
                 return $this->redirectBasedOnRole($user->role);

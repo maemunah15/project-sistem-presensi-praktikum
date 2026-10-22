@@ -196,18 +196,41 @@
         <main class="flex-1 px-6 py-6 lg:px-8 lg:py-8 space-y-6">
 
             @if(session('success'))
-                <div class="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-medium flex justify-between items-center shadow-sm">
-                    <span>{{ session('success') }}</span>
-                    <button onclick="this.parentElement.remove()">&times;</button>
+                <div class="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-medium flex justify-between items-center shadow-sm">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        <span>{{ session('success') }}</span>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="text-emerald-700 hover:text-emerald-900">&times;</button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="p-3.5 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs font-medium flex justify-between items-center shadow-sm">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-rose-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span>{{ session('error') }}</span>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="text-rose-700 hover:text-rose-900">&times;</button>
+                </div>
+            @endif
+
+            @if(session('info'))
+                <div class="p-3.5 bg-blue-50 border border-blue-200 text-blue-800 rounded-xl text-xs font-medium flex justify-between items-center shadow-sm">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-blue-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                        <span>{{ session('info') }}</span>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="text-blue-700 hover:text-blue-900">&times;</button>
                 </div>
             @endif
 
             <!-- BANNER DETAIL KELAS -->
-            <div class="surface p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="surface p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
                 <div>
                     <div class="flex items-center gap-3">
                         <h2 class="text-xl font-bold tracking-tight text-[#183c30]">{{ $kelas->mataPraktikum->nama ?? 'Praktikum' }}</h2>
-                        <span class="px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-bold text-xs">
+                        <span class="px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-bold text-xs border border-emerald-200">
                             Kelas {{ $kelas->nama_kelas ?? '4B' }}
                         </span>
                     </div>
@@ -215,16 +238,26 @@
                         Tahun Ajaran: <span class="font-semibold text-slate-700">{{ $kelas->tahun_ajaran ?? '2026/2027' }}</span> · Semester: <span class="font-semibold text-slate-700">{{ $kelas->semester ?? 5 }}</span>
                     </p>
                 </div>
+
+                <a href="{{ route('admin.penugasan.index') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-semibold transition">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    <span>Kembali ke Daftar Kelas</span>
+                </a>
             </div>
 
             <!-- TWO COLUMN LAYOUT: PENGAJAR & MAHASISWA -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                 <!-- CARD 1: PLOTTING PENGAJAR -->
-                <section class="surface overflow-hidden flex flex-col">
-                    <div class="p-4 border-b border-[#edf1ef]">
-                        <h3 class="text-xs font-bold text-slate-800">1. Plotting Pengajar (Dosen &amp; Asprak)</h3>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Tugaskan Dosen Pengampu atau Asisten Praktikum ke kelas ini.</p>
+                <section class="surface overflow-hidden flex flex-col shadow-sm">
+                    <div class="p-4 border-b border-[#edf1ef] flex justify-between items-center bg-white">
+                        <div>
+                            <h3 class="text-xs font-bold text-slate-800">1. Plotting Pengajar (Dosen &amp; Asprak)</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Tugaskan Dosen Pengampu atau Asisten Praktikum ke kelas ini.</p>
+                        </div>
+                        <span class="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold text-[11px]">
+                            {{ $kelas->pengajar->count() }} Pengajar
+                        </span>
                     </div>
 
                     <div class="p-4 border-b border-[#edf1ef] bg-slate-50/50">
@@ -232,7 +265,7 @@
                             @csrf
                             <select name="user_id" class="field flex-1" required>
                                 <option value="">-- Pilih Dosen / Asprak --</option>
-                                <optgroup label="Dosen">
+                                <optgroup label="Dosen Pengampu">
                                     @foreach($dosens as $d)
                                         <option value="{{ $d->id }}">{{ $d->nama }} ({{ $d->nip_nim }})</option>
                                     @endforeach
@@ -249,7 +282,10 @@
                                 <option value="asprak">Asprak</option>
                             </select>
 
-                            <button type="submit" class="btn-primary shrink-0">+ Tambah</button>
+                            <button type="submit" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#075c46] hover:bg-[#064b3b] text-white text-xs font-bold shadow-xs transition shrink-0 cursor-pointer">
+                                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                                <span>Tugaskan</span>
+                            </button>
                         </form>
                     </div>
 
@@ -277,16 +313,19 @@
                                             @endif
                                         </td>
                                         <td class="text-right">
-                                            <form action="{{ route('admin.penugasan.pengajar.destroy', $p->id) }}?kelas_id={{ $kelas->id }}" method="POST" onsubmit="return confirm('Hapus pengajar ini?')">
+                                            <form action="{{ route('admin.penugasan.pengajar.destroy', $p->id) }}?kelas_id={{ $kelas->id }}" method="POST" onsubmit="return confirm('Hapus penugasan pengajar ini dari kelas?')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="text-rose-600 hover:underline font-semibold text-xs">Hapus</button>
+                                                <button type="submit" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold transition" title="Hapus Pengajar">
+                                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                                    <span>Hapus</span>
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="3" class="text-center p-4 text-slate-400">Belum ada pengajar ditugaskan.</td>
+                                        <td colspan="3" class="text-center p-6 text-slate-400">Belum ada pengajar yang ditugaskan di kelas ini.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -295,28 +334,35 @@
                 </section>
 
                 <!-- CARD 2: MAPPING MAHASISWA -->
-                <section class="surface overflow-hidden flex flex-col">
-                    <div class="p-4 border-b border-[#edf1ef]">
-                        <h3 class="text-xs font-bold text-slate-800">2. Mapping Rombel Mahasiswa</h3>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Pilih mahasiswa terdaftar untuk dimasukkan ke rombel kelas ini.</p>
+                <section class="surface overflow-hidden flex flex-col shadow-sm">
+                    <div class="p-4 border-b border-[#edf1ef] flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white">
+                        <div>
+                            <h3 class="text-xs font-bold text-slate-800">2. Mapping Rombel Mahasiswa</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Mahasiswa yang terdaftar pada kelas rombel ini.</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 font-bold text-xs border border-emerald-100">
+                                {{ $kelas->mahasiswa->count() }} Mahasiswa
+                            </span>
+                            <button type="button" onclick="openModalMhs()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#075c46] hover:bg-[#064b3b] text-white text-xs font-bold shadow-sm transition cursor-pointer">
+                                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                                <span>Pilih Mahasiswa</span>
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="p-4 border-b border-[#edf1ef] bg-slate-50/50">
-                        <form action="{{ route('admin.penugasan.mahasiswa.store', $kelas->id) }}" method="POST" class="flex gap-2">
-                            @csrf
-                            <select name="user_id" class="field flex-1" required>
-                                <option value="">-- Pilih Mahasiswa --</option>
-                                @foreach($mahasiswas as $m)
-                                    <option value="{{ $m->id }}">{{ $m->nip_nim }} - {{ $m->nama }}</option>
-                                @endforeach
-                            </select>
-
-                            <button type="submit" class="btn-primary shrink-0">+ Petakan</button>
-                        </form>
-                    </div>
+                    <!-- PENCARIAN MAHASISWA TERDAFTAR -->
+                    @if($kelas->mahasiswa->count() > 0)
+                        <div class="px-4 py-2.5 border-b border-[#edf1ef] bg-slate-50/50">
+                            <div class="relative">
+                                <input type="text" id="searchRegisteredMhs" oninput="filterRegisteredMhs()" placeholder="Cari mahasiswa di kelas ini (NIM / Nama)..." class="field pl-8 text-xs">
+                                <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            </div>
+                        </div>
+                    @endif
 
                     <div class="overflow-x-auto flex-1">
-                        <table class="data-table">
+                        <table class="data-table" id="tableRegisteredMhs">
                             <thead>
                                 <tr>
                                     <th>NIM</th>
@@ -326,20 +372,30 @@
                             </thead>
                             <tbody>
                                 @forelse($kelas->mahasiswa as $m)
-                                    <tr>
-                                        <td class="font-bold text-slate-600">{{ $m->nip_nim ?? '-' }}</td>
-                                        <td class="font-semibold text-slate-800">{{ $m->nama ?? '-' }}</td>
+                                    <tr class="registered-mhs-row">
+                                        <td class="font-bold text-slate-700 font-mono nim-col">{{ $m->nip_nim ?? '-' }}</td>
+                                        <td class="font-semibold text-slate-800 nama-col">{{ $m->nama ?? '-' }}</td>
                                         <td class="text-right">
-                                            <form action="{{ route('admin.penugasan.mahasiswa.destroy', $m->id) }}?kelas_id={{ $kelas->id }}" method="POST" onsubmit="return confirm('Keluarkan mahasiswa dari kelas ini?')">
+                                            <form action="{{ route('admin.penugasan.mahasiswa.destroy', $m->id) }}?kelas_id={{ $kelas->id }}" method="POST" onsubmit="return confirm('Keluarkan mahasiswa {{ $m->nama }} ({{ $m->nip_nim }}) dari kelas ini?')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="text-rose-600 hover:underline font-semibold text-xs">Keluarkan</button>
+                                                <button type="submit" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold transition" title="Keluarkan dari kelas">
+                                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                                    <span>Keluarkan</span>
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="3" class="text-center p-4 text-slate-400">Belum ada mahasiswa dipetakan.</td>
+                                    <tr id="emptyRegisteredRow">
+                                        <td colspan="3" class="text-center p-8 text-slate-400">
+                                            <div class="space-y-2">
+                                                <p class="font-medium text-slate-500">Belum ada mahasiswa yang dipetakan ke kelas ini.</p>
+                                                <button type="button" onclick="openModalMhs()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#075c46] hover:bg-[#064b3b] text-white text-xs font-semibold shadow-xs">
+                                                    <span>+ Tambahkan Mahasiswa Sekarang</span>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -357,10 +413,209 @@
     </div>
 </div>
 
+<!-- ================= MODAL PEMILIHAN MAHASISWA DENGAN TABEL & LIVE SEARCH ================= -->
+<div id="modalPilihMhs" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-100 overflow-hidden transform transition-all" onclick="event.stopPropagation()">
+        
+        <!-- MODAL HEADER -->
+        <div class="p-4 sm:p-5 border-b border-[#edf1ef] flex justify-between items-start gap-3 bg-white">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center font-bold shrink-0">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div>
+                    <h3 class="text-sm sm:text-base font-bold text-slate-800">Pilih Mahasiswa ke Rombel Kelas {{ $kelas->nama_kelas }}</h3>
+                    <p class="text-xs text-slate-400 mt-0.5">Cari berdasarkan NIM atau Nama. Anda bisa memilih satu per satu atau mencentang sekaligus.</p>
+                </div>
+            </div>
+            <button type="button" onclick="closeModalMhs()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center text-xl leading-none">&times;</button>
+        </div>
+
+        <!-- SEARCH BAR -->
+        <div class="p-4 border-b border-[#edf1ef] bg-slate-50/70">
+            <div class="relative">
+                <input type="text" id="modalSearchMhsInput" oninput="filterModalMahasiswa()" placeholder="Ketik NIM atau Nama mahasiswa untuk mencari..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs outline-none focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 shadow-xs">
+                <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </div>
+        </div>
+
+        <!-- MODAL TABLE CONTENT -->
+        <form id="formMultiMhs" action="{{ route('admin.penugasan.mahasiswa.store', $kelas->id) }}" method="POST" class="flex-1 flex flex-col min-h-0">
+            @csrf
+            <div class="flex-1 overflow-y-auto overflow-x-auto min-h-[260px] max-h-[50vh]">
+                <table class="data-table" id="tableModalMhs">
+                    <thead class="sticky top-0 z-10 bg-[#fafcfb]">
+                        <tr>
+                            <th class="w-10 text-center">
+                                <input type="checkbox" id="checkAllMhs" onchange="toggleSelectAllMhs(this)" class="rounded border-slate-300 text-emerald-700 focus:ring-emerald-600 cursor-pointer" title="Pilih Semua Mahasiswa yang Tampak">
+                            </th>
+                            <th class="w-36">NIM</th>
+                            <th>NAMA MAHASISWA</th>
+                            <th>EMAIL</th>
+                            <th class="text-right w-24">PILIH</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($mahasiswas as $m)
+                            <tr class="modal-mhs-row hover:bg-emerald-50/40 transition">
+                                <td class="text-center">
+                                    <input type="checkbox" name="mahasiswa_ids[]" value="{{ $m->id }}" onchange="updateSelectedCount()" class="mhs-item-checkbox rounded border-slate-300 text-emerald-700 focus:ring-emerald-600 cursor-pointer">
+                                </td>
+                                <td class="font-bold text-slate-700 font-mono modal-nim">
+                                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px]">{{ $m->nip_nim ?? '-' }}</span>
+                                </td>
+                                <td class="font-semibold text-slate-800 modal-nama">{{ $m->nama ?? '-' }}</td>
+                                <td class="text-slate-400 text-xs">{{ $m->email ?? '-' }}</td>
+                                <td class="text-right">
+                                    <button type="button" onclick="pilihSingleMahasiswa('{{ $m->id }}')" class="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white border border-emerald-200 text-xs font-semibold transition cursor-pointer">
+                                        Pilih
+                                    </button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center p-8 text-slate-400">
+                                    Semua mahasiswa dalam sistem sudah terdaftar di kelas ini.
+                                </td>
+                            </tr>
+                        @endforelse
+                        <tr id="noMhsMatchRow" class="hidden">
+                            <td colspan="5" class="text-center p-8 text-slate-400">
+                                Tidak ada mahasiswa yang cocok dengan pencarian NIM / Nama tersebut.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- MODAL FOOTER -->
+            <div class="p-4 border-t border-[#edf1ef] bg-white flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div class="text-xs text-slate-600">
+                    <span id="selectedCountBadge" class="font-bold text-[#075c46]">0</span> mahasiswa dipilih
+                </div>
+
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <button type="button" onclick="closeModalMhs()" class="px-4 py-2 rounded-xl border text-xs font-semibold text-slate-600 hover:bg-slate-50 transition">
+                        Batal
+                    </button>
+                    <button type="submit" id="btnSubmitSelectedMhs" disabled class="px-4 py-2 rounded-xl bg-[#075c46] hover:bg-[#064b3b] text-white text-xs font-bold shadow-sm transition disabled:opacity-50 disabled:cursor-not-allowed">
+                        Tambahkan Mahasiswa Terpilih (0)
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- FORM SINGLE SUBMIT KETIKA KLIK TOMBOL PILIH -->
+        <form id="formSingleMhs" action="{{ route('admin.penugasan.mahasiswa.store', $kelas->id) }}" method="POST" class="hidden">
+            @csrf
+            <input type="hidden" name="user_id" id="singleUserIdInput">
+        </form>
+    </div>
+</div>
+
 <script>
     function toggleSidebar() {
         document.getElementById('sidebar').classList.toggle('open');
         document.getElementById('mobileOverlay').classList.toggle('show');
+    }
+
+    // Modal Control
+    function openModalMhs() {
+        const modal = document.getElementById('modalPilihMhs');
+        if (modal) {
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('modalSearchMhsInput')?.focus();
+            }, 50);
+        }
+    }
+
+    function closeModalMhs() {
+        const modal = document.getElementById('modalPilihMhs');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+    }
+
+    document.getElementById('modalPilihMhs')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModalMhs();
+        }
+    });
+
+    // 1. Live Search Mahasiswa di Dalam Modal
+    function filterModalMahasiswa() {
+        const input = document.getElementById('modalSearchMhsInput');
+        const filter = input.value.toLowerCase().trim();
+        const rows = document.querySelectorAll('.modal-mhs-row');
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const nim = row.querySelector('.modal-nim')?.innerText.toLowerCase() || '';
+            const nama = row.querySelector('.modal-nama')?.innerText.toLowerCase() || '';
+
+            if (nim.includes(filter) || nama.includes(filter)) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        const noMatch = document.getElementById('noMhsMatchRow');
+        if (noMatch) {
+            noMatch.classList.toggle('hidden', visibleCount > 0);
+        }
+    }
+
+    // 2. Select All Checkbox di Modal
+    function toggleSelectAllMhs(masterCheckbox) {
+        const rows = document.querySelectorAll('.modal-mhs-row');
+        rows.forEach(row => {
+            if (row.style.display !== 'none') {
+                const cb = row.querySelector('.mhs-item-checkbox');
+                if (cb) cb.checked = masterCheckbox.checked;
+            }
+        });
+        updateSelectedCount();
+    }
+
+    // 3. Update Hitungan Mahasiswa yang Dipilih
+    function updateSelectedCount() {
+        const checkboxes = document.querySelectorAll('.mhs-item-checkbox:checked');
+        const count = checkboxes.length;
+
+        const badge = document.getElementById('selectedCountBadge');
+        if (badge) badge.innerText = count;
+
+        const btn = document.getElementById('btnSubmitSelectedMhs');
+        if (btn) {
+            btn.disabled = count === 0;
+            btn.innerText = `Tambahkan Mahasiswa Terpilih (${count})`;
+        }
+    }
+
+    // 4. Pilih Single Mahasiswa via Tombol Baris
+    function pilihSingleMahasiswa(userId) {
+        const input = document.getElementById('singleUserIdInput');
+        if (input) {
+            input.value = userId;
+            document.getElementById('formSingleMhs').submit();
+        }
+    }
+
+    // 5. Search Filter untuk Mahasiswa yang Sudah Terdaftar
+    function filterRegisteredMhs() {
+        const input = document.getElementById('searchRegisteredMhs');
+        if (!input) return;
+        const filter = input.value.toLowerCase().trim();
+        const rows = document.querySelectorAll('.registered-mhs-row');
+
+        rows.forEach(row => {
+            const nim = row.querySelector('.nim-col')?.innerText.toLowerCase() || '';
+            const nama = row.querySelector('.nama-col')?.innerText.toLowerCase() || '';
+            row.style.display = (nim.includes(filter) || nama.includes(filter)) ? '' : 'none';
+        });
     }
 </script>
 
